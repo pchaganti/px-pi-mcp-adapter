@@ -6,7 +6,7 @@ https://github.com/user-attachments/assets/4b7c66ff-e27e-4639-b195-22c3db406a5a
 
 ## Why This Exists
 
-Mario wrote about [why you might not need MCP](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/). The problem: each MCP server dumps dozens of tools into your context. Playwright alone eats 13k tokens. Connect a few servers and you've burned half your context window before the conversation starts.
+Mario wrote about [why you might not need MCP](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/). The problem: tool definitions are verbose. A single MCP server can burn 10k+ tokens, and you're paying that cost whether you use those tools or not. Connect a few servers and you've burned half your context window before the conversation starts.
 
 His take: skip MCP entirely, write simple CLI tools instead.
 
