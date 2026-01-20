@@ -71,9 +71,10 @@ export default function mcpAdapter(pi: ExtensionAPI) {
       
       // Update status bar when ready
       if (ctx.hasUI) {
-        const totalTools = [...s.registeredTools.values()].flat().length;
-        if (totalTools > 0) {
-          ctx.ui.setStatus("mcp", ctx.ui.theme.fg("accent", `MCP: ${totalTools} tools`));
+        const serverCount = s.registeredTools.size;
+        if (serverCount > 0) {
+          const label = serverCount === 1 ? "server" : "servers";
+          ctx.ui.setStatus("mcp", ctx.ui.theme.fg("accent", `MCP: ${serverCount} ${label}`));
         } else {
           ctx.ui.setStatus("mcp", "");
         }
@@ -901,11 +902,12 @@ async function reconnectServers(
     }
   }
   
-  // Update status bar with new tool count
+  // Update status bar with server count
   if (ctx.hasUI) {
-    const totalTools = [...state.registeredTools.values()].flat().length;
-    if (totalTools > 0) {
-      ctx.ui.setStatus("mcp", ctx.ui.theme.fg("accent", `MCP: ${totalTools} tools`));
+    const serverCount = state.registeredTools.size;
+    if (serverCount > 0) {
+      const label = serverCount === 1 ? "server" : "servers";
+      ctx.ui.setStatus("mcp", ctx.ui.theme.fg("accent", `MCP: ${serverCount} ${label}`));
     } else {
       ctx.ui.setStatus("mcp", "");
     }

@@ -6,11 +6,11 @@ https://github.com/user-attachments/assets/4b7c66ff-e27e-4639-b195-22c3db406a5a
 
 ## Why This Exists
 
-Mario (Pi's creator) wrote about [why you might not need MCP](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/). The core issue: MCP servers ship dozens of tools with verbose descriptions. Playwright MCP has 21 tools eating 13.7k tokens. Chrome DevTools MCP has 26 tools eating 18k tokens. Connect a few servers and you've burned 30-50k tokens before the conversation starts. That's context bloat, slower responses, higher costs, and confused agents drowning in tool options.
+Mario wrote about [why you might not need MCP](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/). The problem: each MCP server dumps dozens of tools into your context. Playwright alone eats 13k tokens. Connect a few servers and you've burned half your context window before the conversation starts.
 
-His solution: skip MCP, write simple CLI tools.
+His take: skip MCP entirely, write simple CLI tools instead.
 
-But there's an active ecosystem of well-maintained MCP servers for databases, browsers, APIs, file systems, and more. This adapter lets you tap into that ecosystem without the context cost. One proxy tool (~200 tokens) instead of hundreds of individual tool definitions. The LLM discovers what it needs on-demand.
+But the MCP ecosystem has useful stuff - databases, browsers, APIs. This adapter gives you access without the bloat. One proxy tool (~200 tokens) instead of hundreds. The agent discovers what it needs on-demand.
 
 ## Install
 
