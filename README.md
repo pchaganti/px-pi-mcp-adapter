@@ -50,8 +50,10 @@ chrome_devtools_take_screenshot
     fullPage (boolean) - Full page instead of viewport
 ```
 ```
-mcp({ tool: "chrome_devtools_take_screenshot", args: { format: "png" } })
+mcp({ tool: "chrome_devtools_take_screenshot", args: '{"format": "png"}' })
 ```
+
+Note: `args` is a JSON string, not an object.
 
 Two calls instead of 26 tools cluttering the context.
 
@@ -102,7 +104,7 @@ Supported: `cursor`, `claude-code`, `claude-desktop`, `vscode`, `windsurf`, `cod
 |------|---------|
 | Search | `mcp({ search: "screenshot navigate" })` |
 | Describe | `mcp({ describe: "tool_name" })` |
-| Call | `mcp({ tool: "...", args: {...} })` |
+| Call | `mcp({ tool: "...", args: '{"key": "value"}' })` |
 | Status | `mcp({ })` or `mcp({ server: "name" })` |
 
 Search includes parameter schemas by default. Space-separated words are OR'd.

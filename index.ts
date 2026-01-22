@@ -175,13 +175,13 @@ Usage:
   mcp({ server: "name" })               → List tools from server
   mcp({ search: "query" })              → Search for tools (includes schemas, space-separated words OR'd)
   mcp({ describe: "tool_name" })        → Show tool details and parameters
-  mcp({ tool: "name", args: {...} })    → Call a tool
+  mcp({ tool: "name", args: '{"key": "value"}' })    → Call a tool (args is JSON string)
 
 Mode: tool (call) > describe > search > server (list) > nothing (status)`,
     parameters: Type.Object({
       // Call mode
       tool: Type.Optional(Type.String({ description: "Tool name to call (e.g., 'xcodebuild_list_sims')" })),
-      args: Type.Optional(Type.Record(Type.String(), Type.Unknown(), { description: "Arguments for tool call" })),
+      args: Type.Optional(Type.String({ description: "Arguments as JSON string (e.g., '{\"key\": \"value\"}')" })),
       // Describe mode
       describe: Type.Optional(Type.String({ description: "Tool name to describe (shows parameters)" })),
       // Search mode
@@ -193,13 +193,35 @@ Mode: tool (call) > describe > search > server (list) > nothing (status)`,
     }),
     async execute(_toolCallId, params: {
       tool?: string;
-      args?: Record<string, unknown>;
+      args?: string;
       describe?: string;
       search?: string;
       regex?: boolean;
       includeSchemas?: boolean;
       server?: string;
     }) {
+      // Parse args from JSON string if provided
+      let parsedArgs: Record<string, unknown> | undefined;
+      if (params.args) {
+        try {
+          parsedArgs = JSON.parse(params.args);
+          if (typeof parsedArgs !== "object" || parsedArgs === null || Array.isArray(parsedArgs)) {
+            const gotType = Array.isArray(parsedArgs) ? "array" : parsedArgs === null ? "null" : typeof parsedArgs;
+            return {
+              content: [{ type: "text", text: `Invalid args: expected a JSON object, got ${gotType}` }],
+              isError: true,
+              details: { error: "invalid_args_type" },
+            };
+          }
+        } catch (e) {
+          return {
+            content: [{ type: "text", text: `Invalid args JSON: ${e instanceof Error ? e.message : e}` }],
+            isError: true,
+            details: { error: "invalid_args" },
+          };
+        }
+      }
+      
       // Wait for init if still in progress
       if (!state && initPromise) {
         try {
@@ -220,7 +242,7 @@ Mode: tool (call) > describe > search > server (list) > nothing (status)`,
       
       // Mode resolution: tool > describe > search > server > status
       if (params.tool) {
-        return executeCall(state, params.tool, params.args);
+        return executeCall(state, params.tool, parsedArgs);
       }
       if (params.describe) {
         return executeDescribe(state, params.describe);
