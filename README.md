@@ -15,10 +15,10 @@ But the MCP ecosystem has useful stuff - databases, browsers, APIs. This adapter
 ## Install
 
 ```bash
-npx pi-mcp-adapter
+pi install npm:pi-mcp-adapter
 ```
 
-This downloads the extension to `~/.pi/agent/extensions/pi-mcp-adapter/`, installs dependencies, and configures Pi to load it. Restart Pi after installation.
+Restart Pi after installation.
 
 ## Quick Start
 
